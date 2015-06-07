@@ -1,0 +1,2 @@
+hdr_prs.t: ./hdr_prs.c
+	cc ./hdr_prs.c -o ./hdr_prs.t -Wall -g -DTEST

@@ -1,0 +1,16 @@
+Try to read&merge two .vcd files and output a third one, 
+that has the same signals but X where the inputs don't match up. 
+
+how to handle changes?
+a linked list, or a marker bit in value itself, 
+and iterate over the whole tree to dump changes. 
+
+may want to do a generic diff tool, wot 
+outputs 0 for equal signals and 1 where they differ...
+
+to hilight functional differences...
+
+GPL Licensed
+
+Additionally, I reserve the right to do nonsensical things...
+

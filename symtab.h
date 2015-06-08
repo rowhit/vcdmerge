@@ -64,6 +64,7 @@ struct vcd_value
 
 int stInit(struct symtab *s);
 void stClear(struct symtab *s);
+//those return internal ptrs...
 SList *stGetNamesForId(struct symtab *s,char *id);
 char *stGetIdForName(struct symtab *s,char *name);
 void stAddNameForId(struct symtab *s,char *id,char *name,struct vcd_var *var);
@@ -73,6 +74,13 @@ struct vcd_value * stRmvValue(struct symtab *s,char * id);
 
 struct vcd_value *vcdValueNew(struct vcd_var *v);
 void vcdValueDel(struct vcd_value *v);
+struct e_str *estrClone(struct e_str *e);
+int estrEqual(struct e_str *a,struct e_str *b);
+
+//also used in mergetab.h..
+uint32_t id2ids_hash (void *d);
+int id2ids_equals (void *a, void *b);
+void id2ids_destroy (void *d);
 
 #endif
 

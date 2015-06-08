@@ -14,6 +14,7 @@ dhashInit (DHash * h, uint32_t (*hash) (void *d),
     return 1;
 
   h->hash = hash;
+  h->num_entries = 0;
   h->equals = equals;
   h->tbl_size = 32;
   return 0;

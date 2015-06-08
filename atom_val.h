@@ -1,6 +1,7 @@
 #ifndef __atom_val_h
 #define __atom_val_h
-
+#include "symtab.h"
+#include "mergetab.h"
 /*
 when reading changesets, 
 I need to find the full names+values from the ids
@@ -25,7 +26,8 @@ generate equiv-ids for file c, repeat for the other
 ids in a.
 there's one symtab for each input file.
 */
-void avsGenerate(struct symtab * out, struct symtab * a, struct symtab * b);
+void avsGenerate(struct mergetab * out, struct symtab * a, 
+struct symtab * b, struct symtab * c_out);
 
 #endif
 

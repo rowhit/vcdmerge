@@ -200,6 +200,7 @@ void vcdDumpHeader(struct vcd_hdr *s,DHash *idmap,FILE *fp)
 	{
 		dump_scope("",s->base.scopes+i,idmap,fp);
 	}
+	fprintf(fp,"$enddefinitions $end\n");
 }
 
 #ifdef TEST

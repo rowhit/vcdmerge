@@ -11,11 +11,6 @@ on every change populated with values that need dumping..
 (full names, not ids)
 need separate ids for output. exactly 1 per var name..
 */
-struct mergetab
-{
-	unsigned now;///<current simulation timestamp
-	DHash changeset;///<cleared on every change and filled with values that changed, and may need dumping..
-};
 
 /*
 one id may alias multiple signals in the model
@@ -32,7 +27,8 @@ struct merge_ctx
 {
 	FILE *fpa,*fpb,*fpc;
 	struct vcd_hdr ha,hb;
-	struct symtab sa,sb;
+	struct symtab sa,sb,sc;
+	struct mergetab m;
 };
 
 
@@ -366,7 +362,7 @@ extern int vcdmerge(char const * fa,char const * fb,char const * fc)
 //	FILE *fpa,*fpb,*fpc;
 //	struct vcd_hdr ha,hb;
 	struct merge_ctx ctx={0};
-	inr rv=0;
+	int rv=0;
 	ctx.fpa=fopen(fa,"rt");
 	if(NULL==ctx.fpa)
 	{
@@ -397,9 +393,10 @@ extern int vcdmerge(char const * fa,char const * fb,char const * fc)
 	vcdInitValues(&ctx.sa,&ctx.ha,ctx.fpa);
 	vcdInitValues(&ctx.sb,&ctx.hb,ctx.fpb);
 	
-	avsGenerate();
-	dump_header(&ctx.ha,ctx.fpc);
-	
+	avsGenerate(&ctx.m,&ctx.sa,&ctx.sb,&ctx.sc);
+	vcdDumpHeader(&ctx.ha,ctx.fpc);
+	merge_vars();
+	dump_vars();
 	process_changes(&ctx);
 	
 	fclose(fc);

@@ -75,7 +75,7 @@ struct vcd_value * stRmvValue(struct symtab *s,char * id)
 	return v;
 }
 #define frob(x_,i_) (((x_)*5)<<((i_)&15))
-static uint32_t id2id_hash (void *d)
+uint32_t id2id_hash (void *d)
 {
 	struct id2id *i_a=d;
 	char * p=i_a->id1;
@@ -91,13 +91,13 @@ static uint32_t id2id_hash (void *d)
 	return rv;
 }
 
-static int id2id_equals (void *a, void *b)
+int id2id_equals (void *a, void *b)
 {
 	struct id2id *i_a=a,*i_b=b;
 	return strcmp(i_a->id1,i_b->id1);
 }
 
-static uint32_t id2ids_hash (void *d)
+uint32_t id2ids_hash (void *d)
 {
 	struct id2ids *i_a=d;
 	char * p=i_a->id1;
@@ -113,13 +113,13 @@ static uint32_t id2ids_hash (void *d)
 	return rv;
 }
 
-static int id2ids_equals (void *a, void *b)
+int id2ids_equals (void *a, void *b)
 {
 	struct id2ids *i_a=a,*i_b=b;
 	return strcmp(i_a->id1,i_b->id1);
 }
 
-static uint32_t values_hash (void *d)
+uint32_t values_hash (void *d)
 {
 	struct vcd_value *i_a=d;
 	char * p=i_a->id;
@@ -136,7 +136,7 @@ static uint32_t values_hash (void *d)
 
 }
 
-static int values_equals (void *a, void *b)
+int values_equals (void *a, void *b)
 {
 	struct vcd_value *i_a=a,*i_b=b;
 	return strcmp(i_a->id,i_b->id);
@@ -151,7 +151,7 @@ int stInit(struct symtab *s)
 	return 0;
 }
 
-static void id2id_destroy (void *d)
+void id2id_destroy (void *d)
 {
 	struct id2id *i_a=d;
 	free(i_a->id1);
@@ -161,12 +161,12 @@ static void id2id_destroy (void *d)
 	free(i_a);
 }
 
-static void idse_destroy (void *d,SListE *e)
+void idse_destroy (void *d,SListE *e)
 {
 	free(e);
 }
 
-static void id2ids_destroy (void *d)
+void id2ids_destroy (void *d)
 {
 	struct id2ids *i_a=d;
 	free(i_a->id1);
@@ -208,3 +208,17 @@ void stClear(struct symtab *s)
 	dhashClear(&s->values,values_destroy);
 }
 
+struct e_str *estrClone(struct e_str *e)
+{
+	struct e_str *s;
+	s=calloc(strlen(e->s)+1+sizeof(struct e_str),1);
+	assert(s);
+	strcpy(s->s,e->s);
+	s->var=e->var;
+	return s;
+}
+
+int estrEqual(struct e_str *a,struct e_str *b)
+{
+	return (0==strcmp(a->s,b->s));
+}

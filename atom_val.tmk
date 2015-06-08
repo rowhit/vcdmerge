@@ -1,0 +1,2 @@
+atom_val.t: ./atom_val.c ./symtab.o ./mergetab.o ./hdr_prs.o ./dhash.o ./val_init.o ./hdr_cmp.o ./list.o
+	cc ./atom_val.c ./symtab.o ./mergetab.o ./hdr_prs.o ./dhash.o ./val_init.o ./hdr_cmp.o ./list.o -o ./atom_val.t -Wall -g -DTEST

@@ -23,6 +23,7 @@ set_val (char *v, struct symtab *st)
   char *s1 = NULL, *s2 = NULL;
   struct vcd_val_e *rv;
   struct vcd_value *val;
+  char extend;
   size_t i;
   vcdParseVal (v, &s1, &s2);
   val = stGetValue (st, s2);
@@ -32,6 +33,11 @@ set_val (char *v, struct symtab *st)
   {
     assert (is_log_val (s1[i]));
     val->bitz[strlen (s1) - i - 1] = s1[i];
+  }
+  extend = (s1[0] == '1') ? '0' : s1[0];
+  for (; i < val->width; i++)
+  {
+    val->bitz[i] = extend;
   }
   rv = calloc (sizeof (struct vcd_val_e), 1);
   rv->vp = val;

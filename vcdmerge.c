@@ -121,20 +121,6 @@ get_next_change (struct merge_ctx *ctx, SList * a_r, SList * b_r)
   free (b);
 }
 
-struct change_ctx
-{
-  SListE e;
-  int idx;
-  char *id;
-};
-
-struct cset_ctx
-{
-  struct symtab *st;
-  int idx;
-  SList cl;
-};
-
 void
 val_dump (void *x, void *this)
 {

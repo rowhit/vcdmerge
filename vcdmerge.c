@@ -96,25 +96,25 @@ static void
 get_next_change (struct merge_ctx *ctx, SList * a_r, SList * b_r)
 {
   FILE *fp_a = ctx->fpa, *fp_b = ctx->fpb;
-  char *a,*b;
+  char *a, *b;
   a = peek_change (fp_a);
   b = peek_change (fp_b);
   if (change_is_sooner (a, b))
   {
-		ctx->now=strtoul (a + 1, NULL, 10);
-		slistInit(b_r);
+    ctx->now = strtoul (a + 1, NULL, 10);
+    slistInit (b_r);
     read_change (a_r, &ctx->a_st, &ctx->sa, &ctx->ha, fp_a);
   }
   else if (change_at_same_time (a, b))
   {
-		ctx->now=strtoul (a + 1, NULL, 10);
+    ctx->now = strtoul (a + 1, NULL, 10);
     read_change (a_r, &ctx->a_st, &ctx->sa, &ctx->ha, fp_a);
     read_change (b_r, &ctx->b_st, &ctx->sb, &ctx->hb, fp_b);
   }
   else
   {
-		ctx->now=strtoul (b + 1, NULL, 10);
-    slistInit(a_r);
+    ctx->now = strtoul (b + 1, NULL, 10);
+    slistInit (a_r);
     read_change (b_r, &ctx->b_st, &ctx->sb, &ctx->hb, fp_b);
   }
   free (a);
@@ -136,46 +136,47 @@ struct cset_ctx
 };
 
 void
-val_dump(void *x, void *this)
+val_dump (void *x, void *this)
 {
-	struct merge_ctx *ctx=x;
+  struct merge_ctx *ctx = x;
   struct vcd_value *val = this;
-  if(val->width==1)
+  if (val->width == 1)
   {
-  	fprintf(ctx->fpc,"%c%s\n",val->bitz[0],val->id);
+    fprintf (ctx->fpc, "%c%s\n", val->bitz[0], val->id);
   }
   else
   {
-  	size_t i;
-  	fprintf(ctx->fpc,"b");
-  	for(i=0;i<val->width;i++)
-  	{
-	  	fprintf(ctx->fpc,"%c",val->bitz[val->width-i-1]);
-  	}
-  	fprintf(ctx->fpc," %s\n",val->id);
+    size_t i;
+    fprintf (ctx->fpc, "b");
+    for (i = 0; i < val->width; i++)
+    {
+      fprintf (ctx->fpc, "%c", val->bitz[val->width - i - 1]);
+    }
+    fprintf (ctx->fpc, " %s\n", val->id);
   }
 }
 
 static void
-nuffin(void *d)
+nuffin (void *d)
 {
 }
 
-static void dump_compromise(DHash *cl,struct merge_ctx *ctx)
+static void
+dump_compromise (DHash * cl, struct merge_ctx *ctx)
 {
-	fprintf(ctx->fpc,"#%u\n",ctx->now);
-	if(ctx->c_st==DS_INIT)
-	{
-		fprintf(ctx->fpc,"$dumpvars\n");
-	}
+  fprintf (ctx->fpc, "#%u\n", ctx->now);
+  if (ctx->c_st == DS_INIT)
+  {
+    fprintf (ctx->fpc, "$dumpvars\n");
+  }
   dhashForEach (cl, ctx, val_dump);
-	if(ctx->c_st==DS_INIT)
-	{
-		fprintf(ctx->fpc,"$end\n");
-		ctx->c_st=DS_DUMP;
-	}
+  if (ctx->c_st == DS_INIT)
+  {
+    fprintf (ctx->fpc, "$end\n");
+    ctx->c_st = DS_DUMP;
+  }
   dhashClear (cl, nuffin);
-	
+
 }
 
 void
@@ -186,8 +187,8 @@ generate_output (struct merge_ctx *ctx, SList * c_a, SList * c_b)
   //preferrably unique elements(hashmap?)
   //so I know what to dump
   vcdMergeValues (c_a, c_b, &cl, ctx->do_diff);
-  
-  dump_compromise (&cl,ctx);
+
+  dump_compromise (&cl, ctx);
 }
 
 static void
@@ -211,18 +212,19 @@ void
 delcv (void *x, void *this)
 {
   struct vcd_value *val = this;
-  struct vcd_val_e *ve,*next;
-  ve=(struct vcd_val_e *)slistFirst(&val->c_val);
-  while(ve)
+  struct vcd_val_e *ve, *next;
+  ve = (struct vcd_val_e *) slistFirst (&val->c_val);
+  while (ve)
   {
-  	next=(struct vcd_val_e *)slistENext(&ve->e);
-  	free(ve);
-  	ve=next;
+    next = (struct vcd_val_e *) slistENext (&ve->e);
+    free (ve);
+    ve = next;
   }
-  slistInit(&val->c_val);
+  slistInit (&val->c_val);
 }
 
-static void del_cval(struct symtab * st)
+static void
+del_cval (struct symtab *st)
 {
   dhashForEach (&st->values, NULL, delcv);
 }
@@ -234,8 +236,8 @@ vcdmerge (char const *fa, char const *fb, char const *fc, int do_diff)
 //      struct vcd_hdr ha,hb;
   struct merge_ctx ctx = { 0 };
   int rv = 0;
-  ctx.do_diff=do_diff;
-  ctx.now=0;
+  ctx.do_diff = do_diff;
+  ctx.now = 0;
   ctx.fpa = fopen (fa, "rt");
   if (NULL == ctx.fpa)
   {
@@ -273,15 +275,15 @@ vcdmerge (char const *fa, char const *fb, char const *fc, int do_diff)
   vcdDumpHeader (&ctx.ha, &ctx.sc.by_name, ctx.fpc);
 
   process_changes (&ctx);
-	
-	del_cval(&ctx.sa);
+
+  del_cval (&ctx.sa);
   stClear (&ctx.sa);
-	del_cval(&ctx.sb);
+  del_cval (&ctx.sb);
   stClear (&ctx.sb);
   stClear (&ctx.sc);
-	vcdClearHeader(&ctx.ha);
-	vcdClearHeader(&ctx.hb);
-	
+  vcdClearHeader (&ctx.ha);
+  vcdClearHeader (&ctx.hb);
+
   fclose (ctx.fpc);
 cleanup3:
   fclose (ctx.fpb);

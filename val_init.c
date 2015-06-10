@@ -27,11 +27,11 @@ set_val (char *v, struct symtab *st)
   vcdParseVal (v, &s1, &s2);
   val = stGetValue (st, s2);
   assert (val);
-  assert(strlen(s1)<=val->width);// doesn't match...
+  assert (strlen (s1) <= val->width);   // doesn't match exactly... often smaller
   for (i = 0; i < strlen (s1); i++)
   {
     assert (is_log_val (s1[i]));
-    val->bitz[val->width - i - 1] = s1[i];
+    val->bitz[strlen (s1) - i - 1] = s1[i];
   }
   rv = calloc (sizeof (struct vcd_val_e), 1);
   rv->vp = val;
@@ -57,11 +57,11 @@ vcdParseChange (SList * rvl, struct symtab *vals, struct vcd_hdr *h,
   h->start_time = strtoul (&tmp[1], NULL, 10);
   assert (0 == errno);
   pos = ftell (fp);
-  free(tmp);
-  tmp=NULL;
-  n=0;
+  free (tmp);
+  tmp = NULL;
+  n = 0;
   rv = getline (&tmp, &n, fp);
-  while ((tmp[0] != '#') && (rv !=-1))
+  while ((tmp[0] != '#') && (rv != -1))
   {
     slistInsertLast (rvl, &set_val (tmp, vals)->e);
     pos = ftell (fp);

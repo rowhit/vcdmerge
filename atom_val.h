@@ -26,8 +26,8 @@ generate equiv-ids for file c, repeat for the other
 ids in a.
 there's one symtab for each input file.
 */
-void avsGenerate(struct mergetab * out, struct symtab * a, 
-struct symtab * b, struct symtab * c_out);
+void avsGenerate (struct symtab *a,
+                  struct symtab *b, struct symtab *c_out, int do_diff);
+void slistFree (SList * l);
 
 #endif
-

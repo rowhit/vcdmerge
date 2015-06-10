@@ -31,51 +31,61 @@ there's one symtab for each input file.
 */
 struct symtab
 {
-	DHash by_name;///<name->id id2id
-	DHash by_id;///<id->nameS id2ids
-	DHash values;///<id->value vcd_value
+  DHash by_name;                ///<name->id id2id
+  DHash by_id;                  ///<id->nameS id2ids
+  DHash values;                 ///<id->value vcd_value
 };
 
 struct id2ids
 {
-	char * id1;
-	SList l;//e_str
+  char *id1;
+  SList l;                      //e_str
 };
 
 struct e_str
 {
-	SListE e;
-	struct vcd_var *var;
-	char s[];
+  SListE e;
+  struct vcd_var *var;
+  char s[];
 };
 
 struct id2id
 {
-	char * id1;
-	char * id2;
+  char *id1;
+  char *id2;
 };
 
 struct vcd_value
 {
-	char *id;
-	size_t width;
-	char bitz[];
+  char *id;
+  struct vcd_value *a_val;
+  struct vcd_value *b_val;
+  SList c_val;                  ///<of struct vcd_val_e * (there's multiple)
+  size_t width;
+  char bitz[];
 };
 
-int stInit(struct symtab *s);
-void stClear(struct symtab *s);
-//those return internal ptrs...
-SList *stGetNamesForId(struct symtab *s,char *id);
-char *stGetIdForName(struct symtab *s,char *name);
-void stAddNameForId(struct symtab *s,char *id,char *name,struct vcd_var *var);
-int stPutValue(struct symtab *s,struct vcd_value *v);
-struct vcd_value * stGetValue(struct symtab *s,char * id);
-struct vcd_value * stRmvValue(struct symtab *s,char * id);
+struct vcd_val_e
+{
+  SListE e;                     ///<in c_val... urghh..
+  struct vcd_value *vp;
+};
 
-struct vcd_value *vcdValueNew(struct vcd_var *v);
-void vcdValueDel(struct vcd_value *v);
-struct e_str *estrClone(struct e_str *e);
-int estrEqual(struct e_str *a,struct e_str *b);
+int stInit (struct symtab *s);
+void stClear (struct symtab *s);
+//those return internal ptrs...
+SList *stGetNamesForId (struct symtab *s, char *id);
+char *stGetIdForName (struct symtab *s, char *name);
+void stAddNameForId (struct symtab *s, char *id, char *name,
+                     struct vcd_var *var);
+int stPutValue (struct symtab *s, struct vcd_value *v);
+struct vcd_value *stGetValue (struct symtab *s, char *id);
+struct vcd_value *stRmvValue (struct symtab *s, char *id);
+
+struct vcd_value *vcdValueNew (struct vcd_var *v, char init_val);
+void vcdValueDel (struct vcd_value *v);
+struct e_str *estrClone (struct e_str *e);
+int estrEqual (struct e_str *a, struct e_str *b);
 
 //also used in mergetab.h..
 uint32_t id2ids_hash (void *d);
@@ -83,4 +93,3 @@ int id2ids_equals (void *a, void *b);
 void id2ids_destroy (void *d);
 
 #endif
-

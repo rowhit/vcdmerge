@@ -56,6 +56,9 @@ main : $(sources:.c=.o)
 sed 's,\($*\)\.o[ :]*,\1.o $@\: ,g; s,[^\\]$$,& makefile,' < $@.$$$$ > $@; \
 rm -f $@.$$$$
 
+help.h: vcdmerge.man
+	./gen_help_h.sh
+
 ifneq ($(MAKECMDGOALS), clean)
 ifneq ($(MAKECMDGOALS), distclean)
 
@@ -78,4 +81,5 @@ clean :
 	rm -f $(sources:.c=.o)
 	rm -f *~
 	rm -f *.bak
+	rm -f help.h
 

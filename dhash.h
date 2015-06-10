@@ -35,4 +35,3 @@ void *dhashRemove (DHash * h, void *ref);
 ///deposit an element in the map
 int dhashPut (DHash * h, void *d);
 #endif
-

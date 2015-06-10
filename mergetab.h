@@ -11,15 +11,14 @@ need separate ids for output.
 */
 struct mergetab
 {
-	unsigned now;///<current simulation timestamp
-	DHash changeset;///<cleared on every change and filled with values that changed, and may need dumping..
-	DHash idmap[2];///<map an id from a sourcefile  to multiple ids in merged file.
+  unsigned now;                 ///<current simulation timestamp
+  DHash changeset;              ///<cleared on every change and filled with values that changed, and may need dumping..
+  DHash idmap[2];               ///<map an id from a sourcefile  to multiple ids in merged file.
 };
 
-int mtInit(struct mergetab *s);
-void mtClear(struct mergetab *s);
+int mtInit (struct mergetab *s);
+void mtClear (struct mergetab *s);
 
-void get_merged_ids(struct mergetab *m, struct symtab *s, char *id);
+void vcdMergeValues (SList * c_a, SList * c_b, DHash * cs, int do_diff);
 
 #endif
-

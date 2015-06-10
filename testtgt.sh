@@ -14,4 +14,4 @@
 
 #LD_PRELOAD="/usr/lib/ivl/atf.tgt" LD_LIBRARY_PATH="/usr/lib/ivl" LD_DEBUG=all LD_DEBUG_OUTPUT="./ld.log" valgrind -v -v --extra-debuginfo-path="/usr/lib/ivl" --trace-children=yes --leak-check=full --log-file=valg\%p.log /usr/lib/ivl/ivl -N"$1.net" -ppart=ATF22V10 -C"/usr/lib/ivl/atf.conf" "$1.pp"
 
-valgrind -v -v --trace-children=yes --leak-check=full --log-file=valg\%p.log $1
+valgrind -v -v --trace-children=yes --leak-check=full --log-file=valg\%p.log "$@"

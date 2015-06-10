@@ -1,4 +1,4 @@
-.TH VCDMERGE "10" "June 2015" "vcdmerge" "User Commands"
+.TH VCDMERGE "1" "June 2015" "vcdmerge" "User Commands"
 .SH NAME
 vcdmerge \- merge two vcd files
 .SH SYNOPSIS

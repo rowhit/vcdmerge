@@ -2,17 +2,15 @@ sources = $(wildcard *.c)
 headers = $(wildcard *.h)
 archive = archive.tar.bz2
 defines = -D_REENTRANT -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -D_FORTIFY_SOURCE=2
-
-
-#gcov_opt = --coverage
-#gcov_opt = -pg
-
+manpage = vcdmerge.man
 exe_name = vcdmerge
+
 prefix ?= /usr/local
 exec_prefix ?= $(prefix)
 datarootdir ?= $(prefix)/share
 bindir ?= $(exec_prefix)/bin
 infodir ?= $(datarootdir)/info
+mandir ?= $(datarootdir)/man
 
 INSTALL ?= install
 CC ?= cc
@@ -29,7 +27,7 @@ LDFLAGS ?=
 ALL_LDFLAGS = $(lib_dirs) $(LIBRARIES) $(LDFLAGS)
 CPPFLAGS ?= 
 
-.PHONY : all clean distclean install uninstall indent
+.PHONY : all clean distclean install uninstall indent test
 
 all : main
 
@@ -42,11 +40,13 @@ indent :
 $(archive) : clean $(sources) $(headers) makefile
 	tar -vcjf $(archive) $(wildcard *)
 
-install : main
-	$(INSTALL_PROGRAM) -T ./main $(DESTDIR)$(bindir)/$(exe_name)
+install : main vcdmerge.man
+	$(INSTALL_PROGRAM) -T ./main "$(DESTDIR)$(bindir)/$(exe_name)"
+	$(INSTALL_DATA) vcdmerge.man "$(DESTDIR)$(mandir)/man1/vcdmerge.1"
 
 uninstall :
-	rm $(DESTDIR)$(bindir)/$(exe_name)
+	rm -f "$(DESTDIR)$(mandir)/man1/vcdmerge.1"
+	rm -f "$(DESTDIR)$(bindir)/$(exe_name)"
 
 main : $(sources:.c=.o)
 	$(CC) $(sources:.c=.o) $(ALL_CFLAGS) $(ALL_LDFLAGS) -o main 
@@ -67,19 +67,26 @@ include $(sources:.c=.d)
 endif
 endif
 
-ifeq ($(MAKECMDGOALS), test)
-
 tests=$(wildcard *.tmk)
+
+ifeq ($(MAKECMDGOALS), test)
 include $(tests)
 
 test: $(tests:.tmk=.t)
 
 endif
 
-clean : 
+distclean :clean
+	rm -f ./main
+
+clean :
 	rm -f $(sources:.c=.d)
 	rm -f $(sources:.c=.o)
+	rm -f $(tests:.tmk=.t)
 	rm -f *~
+	rm -f *.log
+	rm -f c.vcd
+	rm -f c2.vcd
 	rm -f *.bak
 	rm -f help.h
 

@@ -1,2 +1,4 @@
 val_init.t: ./list.o ./hdr_prs.o ./symtab.o ./dhash.o ./val_init.c
-	cc ./val_init.c ./list.o ./dhash.o ./symtab.o ./hdr_prs.o -o ./val_init.t -Wall -g -DTEST
+	cc ./val_init.c ./list.o ./dhash.o ./symtab.o ./hdr_prs.o -o ./val_init.t -Wall -g -DTEST;\
+./testtgt.sh ./val_init.t
+

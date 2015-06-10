@@ -1,2 +1,3 @@
 hdr_cmp.t: ./hdr_prs.o ./hdr_cmp.c
-	cc ./hdr_cmp.c ./hdr_prs.o -o ./hdr_cmp.t -Wall -g -DTEST
+	cc ./hdr_cmp.c ./hdr_prs.o -o ./hdr_cmp.t -Wall -g -DTEST;\
+./testtgt.sh ./hdr_cmp.t

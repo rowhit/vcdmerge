@@ -170,7 +170,7 @@ static void
 generate_value (char *scopes, struct vcd_var *v, void *d)
 {
   struct symtab *st = d;
-  struct vcd_value *vl = vcdValueNew (v, 'x');
+  struct vcd_value *vl = vcdValueNew (v, '0');
   char *fullname;
   assert (vl);
   if (stPutValue (st, vl))

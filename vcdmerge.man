@@ -1,0 +1,41 @@
+.TH VCDMERGE "10" "June 2015" "vcdmerge" "User Commands"
+.SH NAME
+vcdmerge \- merge two vcd files
+.SH SYNOPSIS
+.B vcdmerge
+[\fIOPTION\fR]... \fIFILES\fR
+.SH DESCRIPTION
+Merges two vcd files to generate a third one. 
+The output file will have `x' bits where the input signals differ. 
+Can be used to massage verilog vvp dump files to 
+more closely resemble reality. 
+.PP
+FILES are `FILE1 FILE2 FILE3'. `FILE3' is the output file.
+.TP
+\fB\-d\fR  \fB\-\-diff\fR
+Do a diff. The destination file will have `1' bits where the inputs differ, 
+`0' when equal. 
+.TP
+\fB\-h\fR  \fB\-\-help\fR
+Output this help.
+.SH EXAMPLE
+.nf
+.B iverilog ./test.v -Tmin
+.B ./a.out
+.B cp dump.vcd dump_min.vcd
+.B iverilog ./test.v -Tmax
+.B ./a.out
+.B cp dump.vcd dump_max.vcd
+.B vcdmerge dump_min.vcd dump_max.vcd dump.vcd
+.fi
+.SH AUTHOR
+Written by Johann Klammer.
+.SH "REPORTING BUGS"
+Report bugs to <klammerj@NOSPAM.a1.net>. (But remove the `NOSPAM.' before posting). 
+.SH COPYRIGHT
+Copyright \(co 2015 Free Software Foundation, Inc.
+.PP
+This program comes with NO WARRANTY, to the extent permitted by law.
+You may redistribute copies of this program
+under the terms of the GNU General Public License.
+For more information about these matters, see the file named COPYING.

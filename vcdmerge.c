@@ -143,7 +143,7 @@ val_dump (void *x, void *this)
 }
 
 static void
-nuffin (void *d)
+nuffin (void *d NOTUSED)
 {
 }
 
@@ -195,7 +195,7 @@ process_changes (struct merge_ctx *ctx)
 }
 
 void
-delcv (void *x, void *this)
+delcv (void *x NOTUSED, void *this)
 {
   struct vcd_value *val = this;
   struct vcd_val_e *ve, *next;

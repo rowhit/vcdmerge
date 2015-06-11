@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <assert.h>
 #include <string.h>
+#define NOTUSED __attribute__((unused))
 
 struct handler
 {
@@ -26,13 +27,13 @@ skip_to_end (FILE * fp)
 }
 
 static int
-proc_date (void *d, FILE * fp)
+proc_date (void *d NOTUSED, FILE * fp)
 {
   return skip_to_end (fp);
 }
 
 static int
-proc_ver (void *d, FILE * fp)
+proc_ver (void *d NOTUSED, FILE * fp)
 {
   return skip_to_end (fp);
 }
@@ -119,7 +120,7 @@ proc_var (void *d, FILE * fp)
 }
 
 static int
-proc_upscope (void *d, FILE * fp)
+proc_upscope (void *d NOTUSED, FILE * fp)
 {
   skip_to_end (fp);             //XXX gotta tokenize stuff...
 
@@ -127,13 +128,13 @@ proc_upscope (void *d, FILE * fp)
 }
 
 static int
-proc_end (void *d, FILE * fp)
+proc_end (void *d NOTUSED, FILE * fp NOTUSED)
 {
   assert (0);                   //unhandled
 }
 
 static int
-proc_defend (void *d, FILE * fp)
+proc_defend (void *d NOTUSED, FILE * fp)
 {
   skip_to_end (fp);
   return SEEN_ENDDEF;

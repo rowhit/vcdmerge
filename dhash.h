@@ -1,5 +1,6 @@
 #ifndef __dhash_h
 #define __dhash_h
+
 /**
  *\file dhash.h
  *\brief dynamic hash table

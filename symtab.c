@@ -5,8 +5,10 @@
 SList *
 stGetNamesForId (struct symtab *s, char *id)
 {
-  struct id2ids ref = { id, 0 };
+  struct id2ids ref;
   struct id2ids *rv;
+  memset (&ref, 0, sizeof (ref));
+  ref.id1 = id;
   rv = dhashGet (&s->by_id, &ref);
   if (rv)
     return &rv->l;
@@ -16,8 +18,10 @@ stGetNamesForId (struct symtab *s, char *id)
 char *
 stGetIdForName (struct symtab *s, char *name)
 {
-  struct id2id ref = { name, NULL };
+  struct id2id ref;
   struct id2id *rv = dhashGet (&s->by_name, &ref);
+  memset (&ref, 0, sizeof (ref));
+  ref.id1 = name;
   if (NULL == rv)
     return NULL;
   return rv->id2;
@@ -27,8 +31,10 @@ void
 stAddNameForId (struct symtab *s, char *id, char *name, struct vcd_var *var)
 {
   struct id2id *a;
-  struct id2ids ref = { id, 0 };
+  struct id2ids ref;
   struct id2ids *rv;
+  memset (&ref, 0, sizeof (ref));
+  ref.id1 = id;
 
   a = calloc (sizeof (struct id2id), 1);
   assert (a);
@@ -66,6 +72,7 @@ stGetValue (struct symtab *s, char *id)
 {
   struct vcd_value *v;
   struct vcd_value ref;
+  memset (&ref, 0, sizeof (ref));
   ref.id = id;
   v = dhashGet (&s->values, &ref);
   return v;
@@ -76,6 +83,7 @@ stRmvValue (struct symtab *s, char *id)
 {
   struct vcd_value *v;
   struct vcd_value ref;
+  memset (&ref, 0, sizeof (ref));
   ref.id = id;
   v = dhashRemove (&s->values, &ref);
   return v;
@@ -177,7 +185,7 @@ id2id_destroy (void *d)
 }
 
 void
-idse_destroy (void *d, SListE * e)
+idse_destroy (void *d NOTUSED, SListE * e)
 {
   free (e);
 }

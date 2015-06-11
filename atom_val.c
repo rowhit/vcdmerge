@@ -184,7 +184,7 @@ ids_for_names (SList names, struct symtab *t)
 }
 
 static void
-just_free (void *x, SListE * e)
+just_free (void *x NOTUSED, SListE * e)
 {
   free (e);
 }

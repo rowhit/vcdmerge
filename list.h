@@ -10,6 +10,9 @@
  *the singly linked variant doesn't support removing elements from the end
  *whereas the doubly linked variant is symmetric
  */
+
+#define NOTUSED __attribute__((unused))
+
 typedef struct SListE_s SListE;
 struct SListE_s
 {

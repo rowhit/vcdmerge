@@ -10,10 +10,10 @@ GPLv3 Licensed
 
 run:
 
-``
+```
 make all
 make install prefix="/usr"
-``
+```
 
 (the second one as root)
 To build and install. 
